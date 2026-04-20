@@ -1,0 +1,118 @@
+import Data
+from tkinter import *
+from tkinter import ttk
+from .base_form import BaseForm
+
+class GameForm(BaseForm):
+    def __init__(self, parent=None):
+        super().__init__(parent=parent, title="Game", size="425x350")
+        self.initialize_components()
+        settings = Data.load_settings()
+        self.word = Data.get_word(diff=settings["diff"], length=settings["length"])
+        self.mistakes = 0
+        self.unused_letters = "abcdefghijklmnnopqrstuvwxyz"
+        self.visible_word = "_ " * len(self.word)
+        self.print_word(self.visible_word)
+        self.print_unused_letters()
+
+
+    def initialize_components(self):
+        self.initialize_canvas()
+        self.initialize_submit()
+
+
+    def initialize_canvas(self):        
+        self.components['canvas'] = Canvas(self.container, bg="white", width=400, height=250)
+        self.components['canvas'].grid(row=0, column=0, columnspan=2)
+        self.components['canvas'].create_line(50, 180, 150, 180, width=2)
+        self.components['canvas'].create_line(100, 180, 100, 30, width=2)
+        self.components['canvas'].create_line(100, 30, 200, 30, width=2)
+        self.components['canvas'].create_line(200, 30, 200, 50, width=2)
+        self.components['counter'] = ttk.Label(self.components['canvas'], text="Mistakes 0 out of 6")
+        self.components['counter'].place(x=250, y=10)
+
+
+    def initialize_submit(self):
+        self.components['entry'] = ttk.Entry(self.container, width=20)
+        self.components['entry'].grid(row=1, column=0, padx=(10, 5), pady=10, sticky="ew")
+        self.components['btn_submit'] = ttk.Button(
+            self.container, 
+            text="Submit", 
+            width=8,
+            command=self.submit_click
+        )
+        self.components['btn_submit'].grid(row=1, column=1, padx=(5, 10), pady=10, sticky="ew")
+
+
+    def print_word(self, text):
+        self.components['canvas'].delete("word")
+        self.components['canvas'].create_text(200, 220, text=text, font=("Arial", 20), tags="word")
+
+
+    def add_mistake(self):
+        self.mistakes += 1
+        self.components['counter'].config(text=f"Mistakes {self.mistakes} out of 6")
+        if self.mistakes == 1:
+            self.components['canvas'].create_oval(175, 50, 225, 100, width=2)
+        elif self.mistakes == 2:
+            self.components['canvas'].create_line(200, 100, 200, 150, width=2)
+        elif self.mistakes == 3:
+            self.components['canvas'].create_line(200, 110, 180, 130, width=2)
+        elif self.mistakes == 4:
+            self.components['canvas'].create_line(200, 110, 220, 130, width=2)
+        elif self.mistakes == 5:
+            self.components['canvas'].create_line(200, 150, 180, 170, width=2)
+        elif self.mistakes == 6:
+            self.components['canvas'].create_line(200, 150, 220, 170, width=2)
+            self.show_dialog(f"Game over! The word was: {self.word}")
+            self.on_closing()
+
+
+    def print_unused_letters(self):
+        self.components['canvas'].delete("letters")
+        letters = ""
+        for i in range(0, len(self.unused_letters), 7):
+            letters += self.unused_letters[i:i+7] + "\n"
+        self.components['canvas'].create_text(300, 100, text=f"Unused letters:\n{letters}", font=("Arial", 10), tags="letters")
+
+
+    def congratulations(self):
+        self.show_dialog("Congratulations! You won!")
+        self.on_closing()
+
+
+    def create_display_word(self, letter: str) -> str:
+        displayed_word = ""
+        for l in self.word:
+            if l in letter or l in self.visible_word:
+                displayed_word += l + " "
+            else:
+                displayed_word += "_ "
+        return displayed_word
+
+
+    def check_letter(self, letter: str) -> bool:
+        if letter in self.word:
+            displayed_word = self.create_display_word(letter)
+            self.print_word(displayed_word)
+            self.visible_word = displayed_word
+            if "_" not in displayed_word:
+                self.congratulations()
+            return True
+        return False
+
+
+    def submit_click(self):
+        user_input = self.components['entry'].get()
+        self.components['entry'].delete(0, END)
+        self.unused_letters = self.unused_letters.replace(user_input, " ")
+        self.print_unused_letters()
+        user_input = user_input.lower()
+        if len(user_input) == 1:
+            if user_input not in self.unused_letters or self.check_letter(user_input):
+                return
+        elif len(user_input) > 1:
+            if user_input == self.word:
+                self.congratulations()
+        self.add_mistake()
+            
