@@ -1,5 +1,5 @@
 import Data
-from tkinter import *
+from tkinter import Canvas, END
 from tkinter import ttk
 from .base_form import BaseForm
 
@@ -92,6 +92,10 @@ class GameForm(BaseForm):
 
 
     def check_letter(self, letter: str) -> bool:
+        if letter not in self.unused_letters:
+            return True
+        self.unused_letters = self.unused_letters.replace(letter, " ")
+        self.print_unused_letters()
         if letter in self.word:
             displayed_word = self.create_display_word(letter)
             self.print_word(displayed_word)
@@ -105,14 +109,10 @@ class GameForm(BaseForm):
     def submit_click(self):
         user_input = self.components['entry'].get()
         self.components['entry'].delete(0, END)
-        self.unused_letters = self.unused_letters.replace(user_input, " ")
-        self.print_unused_letters()
         user_input = user_input.lower()
-        if len(user_input) == 1:
-            if user_input not in self.unused_letters or self.check_letter(user_input):
-                return
-        elif len(user_input) > 1:
-            if user_input == self.word:
-                self.congratulations()
+        if len(user_input) == 1 and self.check_letter(user_input):
+            return
+        elif len(user_input) > 1 and user_input == self.word:
+            self.congratulations()
         self.add_mistake()
             

@@ -1,4 +1,3 @@
-from tkinter import *
 from tkinter import ttk
 from .base_form import BaseForm
 from .settings_form import SettingsForm
@@ -18,21 +17,21 @@ class MainForm(BaseForm):
             width=25,
             command=self.btn_start_click
         )
-        self.components['btn_start'].place(anchor="c", relx=.5, rely=.5, y=-50)
+        self.components['btn_start'].place(anchor="center", relx=.5, rely=.5, y=-50)
 
         self.components['btn_settings'] = ttk.Button(
             text="Settings",
             width=25,
             command=self.btn_settings_click
         )
-        self.components['btn_settings'].place(anchor="c", relx=.5, rely=.5, y=0)
+        self.components['btn_settings'].place(anchor="center", relx=.5, rely=.5, y=0)
 
         self.components['btn_leaderboard'] = ttk.Button(
             text="Leaderboard",
             width=25,
             command=self.btn_leaderboard_click
         )
-        self.components['btn_leaderboard'].place(anchor="c", relx=.5, rely=.5, y=50)
+        self.components['btn_leaderboard'].place(anchor="center", relx=.5, rely=.5, y=50)
 
     def btn_settings_click(self):
         settings_form = SettingsForm(self.window)

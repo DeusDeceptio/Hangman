@@ -1,6 +1,5 @@
-from tkinter import *
 from tkinter import ttk
-from .base_form import *
+from .base_form import BaseForm
 import Data
 
 class SettingsForm(BaseForm):
@@ -21,7 +20,7 @@ class SettingsForm(BaseForm):
             width=10,
             command=self.on_closing
         )
-        self.components['btn_save'].place(anchor="c", relx=.5, rely=.5, y=80)
+        self.components['btn_save'].place(anchor="center", relx=.5, rely=.5, y=80)
 
 
     def initialize_diff(self):
@@ -29,14 +28,14 @@ class SettingsForm(BaseForm):
             self.container,
             text="Difficulty\n* 1 - common\n* 5 - very rare",
         )
-        self.components['lbl_diff'].place(anchor="c", relx=.5, rely=.5, y=-80)
+        self.components['lbl_diff'].place(anchor="center", relx=.5, rely=.5, y=-80)
 
         self.components['spb_diff'] = ttk.Spinbox(
             self.container, 
             from_=1, to=5, 
             width=10
         )
-        self.components['spb_diff'].place(anchor="c", relx=.5, rely=.5, y=-40)
+        self.components['spb_diff'].place(anchor="center", relx=.5, rely=.5, y=-40)
 
     
     def initialize_length(self):
@@ -44,14 +43,14 @@ class SettingsForm(BaseForm):
             self.container, 
             text="Word length"
         )
-        self.components['lbl_len'].place(anchor="c", relx=.5, rely=.5, y=0)
+        self.components['lbl_len'].place(anchor="center", relx=.5, rely=.5, y=0)
 
         self.components['spb_len'] = ttk.Spinbox(
             self.container, 
             from_=5, to=15, 
             width=10
         )
-        self.components['spb_len'].place(anchor="c", relx=.5, rely=.5, y=20)
+        self.components['spb_len'].place(anchor="center", relx=.5, rely=.5, y=20)
 
 
     def on_closing(self):
