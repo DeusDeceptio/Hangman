@@ -6,7 +6,7 @@ class SettingsForm(BaseForm):
     def __init__(self, parent):
         super().__init__(parent=parent, title="Settings", size="200x250")
         self.initialize_components()
-        settings = Data.load_settings()
+        settings = Data.get_settings()
         self.components['spb_diff'].set(settings['diff'])
         self.components['spb_len'].set(settings['length'])
 
@@ -59,6 +59,5 @@ class SettingsForm(BaseForm):
         diff = int(diff) if diff.isdigit() else 3
         length = int(length) if length.isdigit() else 6
         Data.save_settings(diff, length)
-        self.window.grab_release()
-        self.window.destroy()
+        super().on_closing()
 

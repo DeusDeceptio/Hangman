@@ -1,0 +1,22 @@
+[
+    {
+        "name": "player1",
+        "score": 50,
+        "time": 120
+    },
+    {
+        "name": "player2",
+        "score": 50,
+        "time": 60
+    },
+    {
+        "name": "player3",
+        "score": 70,
+        "time": 160
+    },
+    {
+        "name": "player4",
+        "score": 23,
+        "time": 99
+    }
+]
