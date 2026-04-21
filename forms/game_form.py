@@ -9,7 +9,6 @@ class GameForm(BaseForm):
     def __init__(self, parent=None):
         super().__init__(parent=parent, title="Game", size="425x350")
         self.initialize_components()
-        self.start_time = datetime.datetime.now()
         
         
     def initialize_components(self):
@@ -25,7 +24,7 @@ class GameForm(BaseForm):
         self.mistakes = 0
         self.print_word(self.visible_word)
         self.print_unused_letters()
-        print(self.diff, self.length)
+        self.start_time = datetime.datetime.now()
 
 
     def initialize_canvas(self):        
@@ -87,11 +86,9 @@ class GameForm(BaseForm):
     def print_unused_letters(self):
         self.components['canvas'].delete("letters")
         letters = ""
-        current_index = 0
         for i in range(0, 4):
-            for j in range(0, 7):
-                letters += " " + self.unused_letters[current_index]
-                current_index += 1
+            for j in range(i*7, i*7+7):
+                letters += " " + self.unused_letters[j]
             letters += "\n"
         self.components['canvas'].create_text(300, 100, text=f"Unused letters:\n{letters}", font=("Arial", 10), tags="letters")
 
