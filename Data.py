@@ -1,5 +1,6 @@
 import json
 import requests
+import random
 
 
 def get_url(diff: int = 3, length: int = 6) -> str:

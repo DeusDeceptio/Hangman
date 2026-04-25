@@ -96,7 +96,7 @@ class GameForm(BaseForm):
     def congratulations(self):
         end_time = datetime.datetime.now()
         time_taken = int((end_time - self.start_time).total_seconds())
-        congratulation_form = CongratulationForm(parent=self, score=self.score, time_taken=time_taken)
+        congratulation_form = CongratulationForm(parent=self.window, score=self.score, time_taken=time_taken)
         congratulation_form.show_modal()
         self.on_closing()
 
