@@ -17,7 +17,7 @@ class GameForm(BaseForm):
         settings = Data.get_settings()
         self.diff = settings["diff"]
         self.length = settings["length"]
-        self.word = Data.get_word(diff=self.diff, length=self.length)
+        self.word = Data.get_word(diff=self.diff, length=self.length).lower()
         if self.length != len(self.word):
             self.diff = 2
             self.length = len(self.word)
@@ -62,8 +62,8 @@ class GameForm(BaseForm):
 
 
     def add_mistake(self):
-        self.mistakes += 1
         self.update_score(-self.diff * self.length)
+        self.mistakes += 1
         self.components['counter'].config(text=f"Mistakes {self.mistakes} out of 6")
         match self.mistakes:
             case 1:
@@ -140,5 +140,6 @@ class GameForm(BaseForm):
         elif len(user_input) > 1 and user_input == self.word:
             self.update_score(self.diff * self.length * 3)
             self.congratulations()
+            return
         self.add_mistake()
             

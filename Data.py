@@ -30,7 +30,7 @@ def get_word_file(file_path: str):
     with open(file_path, 'r') as file:
         lines = file.readlines()
         random_line = random.choice(lines)
-        return random_line.replace('\n', '')
+        return random_line.replace('\n', '').lower().strip()
 
 def save_settings(diff: int = 3, length: int = 6):
     settings = {"diff": diff, "length": length}
