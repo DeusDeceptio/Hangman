@@ -1,7 +1,6 @@
 import json
 import requests
 import random
-from requests.exceptions import Timeout, ConnectionError
 
 
 def get_url(diff: int = 3, length: int = 6) -> str:

@@ -21,6 +21,7 @@ class GameForm(BaseForm):
         if self.length != len(self.word):
             self.diff = 2
             self.length = len(self.word)
+        print(self.word)
         self.unused_letters = "abcdefghijklmnopqrstuvwxyz  "
         self.visible_word = "_ " * len(self.word)
         self.score = 0
