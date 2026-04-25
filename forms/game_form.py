@@ -18,6 +18,7 @@ class GameForm(BaseForm):
         self.diff = settings["diff"]
         self.length = settings["length"]
         self.word = Data.get_word(diff=self.diff, length=self.length)
+        self.length = len(self.word)
         self.unused_letters = "abcdefghijklmnopqrstuvwxyz  "
         self.visible_word = "_ " * len(self.word)
         self.score = 0

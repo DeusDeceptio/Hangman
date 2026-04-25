@@ -1,6 +1,7 @@
 import json
 import requests
 import random
+from requests.exceptions import Timeout, ConnectionError
 
 
 def get_url(diff: int = 3, length: int = 6) -> str:
@@ -17,12 +18,20 @@ def get_url(diff: int = 3, length: int = 6) -> str:
 def get_word(diff: int = 3, length: int = 6) -> str:
     url = get_url(diff, length)
     try:
-        request = requests.get(url)
-        word = request.json()[0]
+        response = requests.get(
+            url=url,
+            timeout=(5, 10)
+        )
+        word = response.json()[0]
     except:
-        word = "error"
+        word = get_word_file("words.txt")
     return word
 
+def get_word_file(file_path: str):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        random_line = random.choice(lines)
+        return random_line.replace('\n', '')
 
 def save_settings(diff: int = 3, length: int = 6):
     settings = {"diff": diff, "length": length}
